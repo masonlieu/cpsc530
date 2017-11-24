@@ -272,7 +272,6 @@ def main():
             pygame.display.update()
 
         del mainShipList[0]
-        Total_Ships.extend(mainShipList)
         #===================================================================
         pygame.display.update()
         #===================================================================
@@ -458,6 +457,7 @@ def main():
                     debug("Total ships placed on " + str(x) + "," + str(y) + " is " + str(count))
 
         boatNum += 1
+        Total_Ships.extend(mainShipList)
     #|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
     #======================================== THE END ======================================================
 while True:
