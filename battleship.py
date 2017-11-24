@@ -21,18 +21,22 @@ class Vessel(object):
             RandomX = 0
             RandomY = 0
             receiving_boat = True
-            while(receiving_boat):
-                ev = pygame.event.get()
-                for event in ev:
-                    if event.type == pygame.MOUSEBUTTONUP:
-                        X, Y = pygame.mouse.get_pos()
-                        if (X>= 20) and (X<= 420) and (Y>= 20) and (Y<= 420):
-                            RandomX = myTuple[(X-20)//20]
-                            RandomY = myTuple[(Y-20)//20]
-                            receiving_boat = False
-                    if event.type==pygame.KEYUP:
-                        if event.key==pygame.K_q:
-                            quitGame(1)
+            try:
+                while(receiving_boat):
+                    ev = pygame.event.get()
+                    for event in ev:
+                        if event.type == pygame.MOUSEBUTTONUP:
+                            X, Y = pygame.mouse.get_pos()
+                            if (X>= 20) and (X<= 420) and (Y>= 20) and (Y<= 420):
+                                RandomX = myTuple[(X-20)//20]
+                                RandomY = myTuple[(Y-20)//20]
+                                receiving_boat = False
+                        if event.type==pygame.KEYUP:
+                            if event.key==pygame.K_q:
+                                quitGame(1)
+            except:
+                print("Error placing boats")
+                quitGame(1)
 
 
             # RandomX = myTuple[int(random.uniform(0, 19))]# Random number for x coordinate
@@ -346,7 +350,8 @@ def main():
                         while (count >0):
                             boat_pr.append([x, y])
                             count -= 1
-                        if Total_Ships.count((x,y)) <5:
+                        if len(Total_Ships) <5:
+                            debug("TOTAL SHIPS LT 5")
                             rnd = int(random.uniform(0, 20))
                             if rnd == 1:
                                 boat_pr.append([x, y])
