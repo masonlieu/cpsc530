@@ -346,9 +346,10 @@ def main():
                         while (count >0):
                             boat_pr.append([x, y])
                             count -= 1
-                        rnd = int(random.uniform(0, 20))
-                        if rnd == 1:
-                            boat_pr.append([x, y])
+                        if Total_Ships.count((x,y)) <5:
+                            rnd = int(random.uniform(0, 20))
+                            if rnd == 1:
+                                boat_pr.append([x, y])
 
                 choice = boat_pr[int(random.uniform(0, len(boat_pr)))]
                 X = choice[0]
