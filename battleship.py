@@ -21,18 +21,22 @@ class Vessel(object):
             RandomX = 0
             RandomY = 0
             receiving_boat = True
-            while(receiving_boat):
-                ev = pygame.event.get()
-                for event in ev:
-                    if event.type == pygame.MOUSEBUTTONUP:
-                        X, Y = pygame.mouse.get_pos()
-                        if (X>= 20) and (X<= 420) and (Y>= 20) and (Y<= 420):
-                            RandomX = myTuple[(X-20)//20]
-                            RandomY = myTuple[(Y-20)//20]
-                            receiving_boat = False
-                    if event.type==pygame.KEYUP:
-                        if event.key==pygame.K_q:
-                            quitGame(1)
+            try:
+                while(receiving_boat):
+                    ev = pygame.event.get()
+                    for event in ev:
+                        if event.type == pygame.MOUSEBUTTONUP:
+                            X, Y = pygame.mouse.get_pos()
+                            if (X>= 20) and (X<= 420) and (Y>= 20) and (Y<= 420):
+                                RandomX = myTuple[(X-20)//20]
+                                RandomY = myTuple[(Y-20)//20]
+                                receiving_boat = False
+                        if event.type==pygame.KEYUP:
+                            if event.key==pygame.K_q:
+                                quitGame(1)
+            except:
+                print("Error placing boats")
+                quitGame(1)
 
 
             # RandomX = myTuple[int(random.uniform(0, 19))]# Random number for x coordinate
@@ -272,7 +276,6 @@ def main():
             pygame.display.update()
 
         del mainShipList[0]
-        Total_Ships.extend(mainShipList)
         #===================================================================
         pygame.display.update()
         #===================================================================
@@ -347,9 +350,11 @@ def main():
                         while (count >0):
                             boat_pr.append([x, y])
                             count -= 1
-                        rnd = int(random.uniform(0, 20))
-                        if rnd == 1:
-                            boat_pr.append([x, y])
+                        if len(Total_Ships) <5:
+                            debug("TOTAL SHIPS LT 5")
+                            rnd = int(random.uniform(0, 20))
+                            if rnd == 1:
+                                boat_pr.append([x, y])
 
                 choice = boat_pr[int(random.uniform(0, len(boat_pr)))]
                 X = choice[0]
@@ -458,6 +463,7 @@ def main():
                     debug("Total ships placed on " + str(x) + "," + str(y) + " is " + str(count))
 
         boatNum += 1
+        Total_Ships.extend(mainShipList)
     #|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
     #======================================== THE END ======================================================
 while True:
