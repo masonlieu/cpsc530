@@ -1,25 +1,33 @@
 import re, glob, pygame, sys, io, ast
 
-def getData(filename, gameCount):
+def getData(filename, gameCount, level):
     pattern = re.compile('(\(\d+,\d+\))')
     searching = True
     readingCoord = False
+    filtering = True
     try:
         with open(filename, "r") as f:
             for line in f:
-                if "=" in line:
-                    gameCount += 1
-                if searching:
+                if ":" in line:
+                    index = line.strip().split(":")
+                    if index[0] == "Captain's score":
+                        if int(index[1]) >= level:
+                            filtering = False
+                            gameCount += 1
+                        else:
+                            filtering = True
+                if searching and not filtering:
                     if (line.strip() == "Total shots:") or (line.strip() == "Total boats placed:"):
                         searching = False
                         readingCoord = True
-                elif readingCoord:
+                elif readingCoord and not filtering:
                     coord = line.strip().split(":")
                     if pattern.match(coord[0]):
                         coord_data[coord[0]] += int(coord[1])
                     else:
                         searching = True
                         readingCoord = False
+
     except Exception as e:
         print("Error: " + str(e))
     return gameCount
@@ -111,8 +119,17 @@ def genMap(secondC, secondD, thirdC, thirdD):
 
 def main():
     gameCount = 0
+    level = 0
+    while True:
+        level = input("Generate heat map for games past level <int> ? ")
+        try:
+            level = int(level)
+            break
+        except:
+            pass
     for filename in glob.glob('*.txt'):
-        gameCount = getData(filename, gameCount)
+        print("OPENING FILE!!!")
+        gameCount = getData(filename, gameCount, level)
     print("Game count is: " + str(gameCount))
     genMap(secondC, secondD, thirdC, thirdD)
 
